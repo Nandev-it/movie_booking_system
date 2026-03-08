@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Maintenance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Maintenance')</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -17,7 +18,7 @@
     </div>
 
     <!-- Content -->
-    <div class="text-center max-w-xl px-6">
+    <div class="text-center px-6">
 
         <!-- Logo -->
         <h1 class="text-3xl font-bold text-black mb-6">
