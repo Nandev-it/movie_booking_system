@@ -6,7 +6,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -43,7 +43,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -80,7 +80,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -117,7 +117,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -154,7 +154,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -191,7 +191,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -228,7 +228,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -265,7 +265,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -302,7 +302,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -339,7 +339,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -376,7 +376,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -413,7 +413,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -450,7 +450,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -487,7 +487,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -524,7 +524,7 @@
         <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
 
             <!-- Poster -->
-            <img src="{{ asset('assets/movie1.png') }}" class="w-full h-[320px] max-h-[320px] object-cover rounded-t-3xl">
+            <img src="{{ asset('assets/movie1.png') }}" class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
 
             <!-- Content -->
             <div class="p-4 text-center text-white">
@@ -558,6 +558,7 @@
 
             </div>
         </div>
+
 
         <!-- Duplicate cards here -->
 
