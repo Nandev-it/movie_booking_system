@@ -16,5 +16,5 @@
         Guest
     @endauth
 </h1>
-@include('components.cardmovie')
+
 @endsection

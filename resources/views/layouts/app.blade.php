@@ -35,6 +35,7 @@
 
         <main class="py-6 max-w-7xl mx-auto px-4">
             @yield('content')
+            @include('components.cardmovie')
         </main>
 
         {{-- @include('components.footer') --}}
