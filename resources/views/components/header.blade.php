@@ -1,14 +1,14 @@
-<header x-data="{ mobileMenu: false }" class="text-white relative z-50">
+<header x-data="{ mobileMenu: false }" class="text-white relative z-50" data-aos="zoom-in">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
 
             <!-- Logo -->
-            <a href="{{ url('/') }}" class="flex-shrink-0 text-2xl font-bold text-white">
+            <a href="{{ url('/') }}" class="flex-shrink-0 text-2xl font-bold text-white" data-aos="zoom-in">
                 Nan<span class="text-purple-500">Flex</span>
             </a>
 
             <!-- Navigation: Hidden on mobile -->
-            <nav class="hidden md:flex space-x-10 bg-gray-800/50 backdrop-blur-md rounded-full px-6 py-4">
+            <nav class="hidden md:flex space-x-10 bg-gray-800/50 backdrop-blur-md rounded-full px-6 py-4" data-aos="zoom-in">
                 <a href="{{ url('/') }}" class="hover:text-purple-500 transition">Home</a>
                 <a href="#" class="hover:text-purple-500 transition">Movies</a>
                 <a href="#" class="hover:text-purple-500 transition">Theaters</a>
@@ -16,7 +16,7 @@
             </nav>
 
             <!-- Right Icons / Auth -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4" data-aos="zoom-in">
 
                 <!-- Search Icon -->
                 <button class="p-2 hover:bg-gray-700 rounded-full transition sm:flex">
