@@ -46,3 +46,5 @@ Route::post('/set-language', function (Request $request) {
     }
 
     return response()->json(['status' => 'ok']);
+
+});
