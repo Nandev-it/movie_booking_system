@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -20,9 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        App::setLocale(session('locale', 'en'));
         // Force HTTPS in production (helps @vite load assets correctly on Vercel)
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
+        // if (app()->environment('production')) {
+        //     URL::forceScheme('https');
+        // }
     }
 }

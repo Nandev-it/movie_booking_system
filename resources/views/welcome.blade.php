@@ -8,13 +8,16 @@
             {{ session('success') }}
         </div>
     @endif
-<h1 class="text-2xl text-white font-bold mb-4">
-    Welcome back!
-    @auth
-        <span class="text-purple-600">{{ Auth::user()->name }}</span>
-    @else
-        Guest
-    @endauth
-</h1>
+    <h1 class="text-2xl text-white font-bold mb-4">
+
+        <span x-text="$store.lang.t.welcome"></span>
+
+        @auth
+            <span class="text-purple-600">{{ Auth::user()->name }}</span>
+        @else
+            <span x-text="$store.lang.t.guest"></span>
+        @endauth
+
+    </h1>
 
 @endsection
