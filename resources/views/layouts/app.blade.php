@@ -40,7 +40,7 @@
 
         @include('components.header')
 
-        <main class="py-25 max-w-7xl mx-auto px-4 ">
+        <main class="py-25 max-w-7xl mx-auto px-4 suwannaphum-thin ">
             @yield('content')
             @include('components.cardmovie')
         </main>

@@ -34,17 +34,32 @@ Route::get('/maintenance', function () {
 });
 
 // Set language (desktop & mobile)
+// Route::post('/set-language', function (Request $request) {
+//     $locale = $request->locale;
+
+//     // Save in session
+//     session(['locale' => $locale]);
+
+//     // Save in database if user is logged in
+//     if (Auth::check()) {
+//         Auth::user()->update(['locale' => $locale]);
+//     }
+
+//     return response()->json(['status' => 'ok']);
+
+// });
+
+// routes/web.php
 Route::post('/set-language', function (Request $request) {
     $locale = $request->locale;
+    $supported = ['en', 'kh', 'kr', 'jp'];
 
-    // Save in session
-    session(['locale' => $locale]);
-
-    // Save in database if user is logged in
-    if (Auth::check()) {
-        Auth::user()->update(['locale' => $locale]);
+    if (in_array($locale, $supported)) {
+        session(['locale' => $locale]);
+        App::setLocale($locale);
     }
 
-    return response()->json(['status' => 'ok']);
-
+    return response()->json([
+        'translations' => trans('messages', [], $locale)
+    ]);
 });
