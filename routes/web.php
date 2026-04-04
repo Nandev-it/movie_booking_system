@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +53,7 @@ Route::get('/maintenance', function () {
 
 // routes/web.php
 Route::post('/set-language', function (Request $request) {
-    $locale = $request->locale;
+    $locale = $request->getLocale;
     $supported = ['en', 'kh', 'kr', 'jp'];
 
     if (in_array($locale, $supported)) {
@@ -63,3 +65,9 @@ Route::post('/set-language', function (Request $request) {
         'translations' => trans('messages', [], $locale)
     ]);
 });
+
+// routes/web.php
+Route::get('/search', [SearchController::class, 'index']);
+
+Route::get('/movies', [MovieController::class, 'index']);
+Route::get('/movies/{id}', [MovieController::class, 'show']);
