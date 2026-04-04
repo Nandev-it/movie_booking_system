@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('screens'); // Add this line
         Schema::create('screens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('theater_id'); // explicit type
+            $table->foreignId('theater_id');
             $table->string('name');
             $table->integer('total_seats');
             $table->timestamps();
-
-            $table->foreign('theater_id')
-                ->references('id')
-                ->on('theaters')
-                ->onDelete('cascade');
         });
     }
 

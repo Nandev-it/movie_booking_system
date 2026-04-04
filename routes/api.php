@@ -11,3 +11,5 @@ use App\Http\Controllers\Api\AuthController;
 
 
 Route::post('/user_login', [AuthController::class, 'login']);
+Route::get('/status', [AuthController::class, 'index']);
+

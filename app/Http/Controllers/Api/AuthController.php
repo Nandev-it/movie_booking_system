@@ -114,4 +114,15 @@ class AuthController extends Controller
         // 3. Redirect to login page with success message
         return redirect('/login')->with('success', 'Registration successful! Please login.');
     }
+
+
+    public function index()
+    {
+        $users = User::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'API is working',
+            'users' => $users
+        ]);
+    }
 }
