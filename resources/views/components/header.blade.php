@@ -82,7 +82,9 @@
 
     <!-- Mobile Logo -->
     <a href="{{ url('/') }}" class="text-2xl font-bold text-white lg:hidden fixed top-4 left-4 z-50">
-        Nan<span class="text-purple-500">Flex</span>
+        {{-- Nan<span class="text-purple-500">Flex</span> --}}
+        <img src="{{ asset('assets/icons/N-logo.png') }}" alt="NanFlex Logo" class="w-full">
+
     </a>
 
     <!-- Mobile Language Switch (Top Right) -->
@@ -108,7 +110,8 @@
 
     <!-- Mobile Logo -->
     <a href="{{ url('/') }}" class="text-2xl font-bold text-white lg:hidden fixed top-4 left-4 z-50">
-        Nan<span class="text-purple-500">Flex</span>
+        {{-- Nan<span class="text-purple-500">Flex</span> --}}
+        <img src="{{ asset('assets/icons/N-logo.png') }}" alt="NanFlex Logo" class="w-full">
     </a>
 
     <!-- Mobile Language Switch (Top Right) -->
