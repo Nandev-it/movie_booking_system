@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PhoneLoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +73,13 @@ Route::get('/search', [SearchController::class, 'index']);
 
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{id}', [MovieController::class, 'show']);
+
+
+// routes/web.php
+Route::get('/login/phone',         [PhoneLoginController::class, 'index'])->name('phone.login');
+Route::post('/login/phone/otp',    [PhoneLoginController::class, 'sendOtp'])->name('phone.otp.send');
+Route::post('/login/phone/verify', [PhoneLoginController::class, 'verifyOtp'])->name('phone.otp.verify');
+
+Route::get('/test-phone', function() {
+    return response()->json(['success' => true, 'message' => 'Route working']);
+});

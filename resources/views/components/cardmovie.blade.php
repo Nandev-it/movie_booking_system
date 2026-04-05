@@ -1,49 +1,65 @@
 @php
     $movies = \App\Models\Movie::latest()->get();
 @endphp
+
 <div class="max-w-7xl mx-auto px-4 py-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+
+    {{-- Header --}}
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-white text-xl font-semibold">
+            Top <span class="text-purple-400">Airing Movies</span>
+        </h2>
+        <a href="{{ url('/movies') }}" class="text-sm text-gray-400 hover:text-white transition">
+            See all ›
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
         @forelse ($movies as $movie)
-            <div class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden hover:scale-105 transition duration-300">
+            <a href="{{ url('/movies/' . $movie->id) }}"
+                class="group block rounded-2xl overflow-hidden hover:scale-105 transition duration-300 cursor-pointer" data-aos="zoom-in">
 
-                {{-- Poster --}}
-                <img
-                    src="{{ $movie->poster ? asset($movie->poster) : asset('assets/default-poster.jpg') }}"
-                    alt="{{ $movie->title }}"
-                    class="w-full md:max-h-[320px] sm:max-h-[250px] object-cover rounded-t-3xl">
+                {{-- Poster with overlays --}}
+                <div class="relative">
+                    <img
+                        src="{{ $movie->poster ? asset($movie->poster) : 'https://static.wikia.nocookie.net/marveldatabase/images/b/b3/All-New_Venom_Vol_1_1_Lee_Virgin_Variant.jpg/revision/latest?cb=20241206180423' }}"
+                        alt="{{ $movie->title }}"
+                        class="w-full object-cover rounded-2xl h-[220px] md:h-[280px] lg:h-[300px]">
 
-                {{-- Content --}}
-                <div class="p-4 text-center text-white">
-
-                    <h2 class="text-lg font-semibold line-clamp-1">
-                        {{ $movie->title }}
-                    </h2>
-
-                    <p class="text-gray-400 text-sm mt-1">
-                        {{ $movie->genre ?? 'N/A' }}
-                    </p>
-
-                    <p class="text-gray-400 text-sm">
-                        {{ floor($movie->duration / 60) }}h {{ $movie->duration % 60 }}mins
-                    </p>
-
-                    {{-- Stars (static for now) --}}
-                    <div class="flex justify-center mt-2 text-yellow-400 text-lg">
-                        ★ ★ ★ ★ ☆
+                    {{-- Dark gradient overlay at bottom --}}
+                    <div class="absolute inset-0 rounded-2xl"
+                        style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);">
                     </div>
 
-                    <p class="text-gray-400 text-sm mt-1">
-                        {{ $movie->release_date ? \Carbon\Carbon::parse($movie->release_date)->format('M d, Y') : '' }}
-                    </p>
+                    {{-- Duration badge top-right --}}
+                    <div class="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-white font-medium"
+                        style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        {{ floor($movie->duration / 60) }}h {{ $movie->duration % 60 }}m
+                    </div>
 
-                    {{-- Button --}}
-                    <button class="mt-4 w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-full transition duration-300">
-                        <a href="{{ url('/movies/' . $movie->id) }}">Buy Ticket</a>
-                    </button>
+                    {{-- Genre badge top-left --}}
+                    <div class="absolute top-2 left-2 px-2 py-1 rounded-lg text-xs font-medium"
+                        style="background: rgba(91,79,207,0.8); color:#fff; backdrop-filter: blur(4px);">
+                        {{ $movie->genre ?? 'Movie' }}
+                    </div>
 
+                    {{-- Title at bottom of image --}}
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white text-sm font-semibold line-clamp-1">
+                            {{ $movie->title }}
+                        </h3>
+                        <p class="text-gray-300 text-xs mt-0.5">
+                            {{ $movie->release_date ? \Carbon\Carbon::parse($movie->release_date)->format('M Y') : '' }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+
+            </a>
 
         @empty
             <div class="col-span-5 text-center text-gray-400 py-20">

@@ -17,6 +17,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Cinzel:wght@400..900&family=Dangrek&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Hanuman:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans+Khmer:wght@100..900&family=Noto+Serif+Khmer:wght@100..900&family=Roboto+Slab:wght@100..900&family=Suwannaphum:wght@100;300;400;700;900&display=swap"
         rel="stylesheet">
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 </head>
 
 <body style="background-image: url('{{ asset('assets/bg-venom.png') }}');"
@@ -58,11 +60,31 @@
         });
     </script>
 
+    
+
     <style>
         .suwannaphum-thin {
             font-family: "Suwannaphum", serif;
             font-weight: 100;
             font-style: normal;
+        }
+
+        @keyframes playPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .animate-play {
+            animation: playPulse 1.5s infinite ease-in-out;
         }
     </style>
 
