@@ -8,4 +8,5 @@ return [
     'profile' => 'Profile',
     'myTickets' => 'My Tickets',
     'logout' => 'Logout',
+    'watchNow' => '🎬 Watch Now',
 ];

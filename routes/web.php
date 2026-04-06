@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PhoneLoginController;
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
@@ -33,6 +34,13 @@ Route::post('/user_register', [AuthController::class, 'register']);
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
+});
+
+// Profile routes (protected by auth middleware)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // Maintenance page
@@ -76,8 +84,21 @@ Route::post('/set-language', function (Request $request) {
     ]);
 });
 
+// Get current language translations (for dynamic updates)
+Route::get('/set-language-get', function (Request $request) {
+    $locale = session('locale', app()->getLocale());
+    $translations = require resource_path("lang/{$locale}/messages.php");
+
+    return response()->json([
+        'success'      => true,
+        'locale'       => $locale,
+        'translations' => $translations,
+    ]);
+});
+
 // routes/web.php
 Route::get('/search', [SearchController::class, 'index']);
+Route::get('/movies/search', [MovieController::class, 'search']);
 
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/{id}', [MovieController::class, 'show']);

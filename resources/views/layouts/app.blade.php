@@ -44,7 +44,7 @@
 
         <main class="py-25 max-w-7xl mx-auto px-4 suwannaphum-thin ">
             @yield('content')
-            @include('components.cardmovie')
+            {{-- @include('components.cardmovie') --}}
         </main>
 
         {{-- @include('components.footer') --}}
@@ -53,7 +53,74 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    {{-- ✅ Alpine.js for dynamic components --}}
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
     <script>
+        function headerComponent() {
+            return {
+                scrolled: false,
+                langOpen: false,
+                open: false,
+                active: '{{ request()->path() == '/' ? '/' : request()->segment(1) }}',
+                locale: '{{ session('locale', app()->getLocale()) }}',
+                translations: @json(__('messages')),
+
+                languages: {
+                    en: {
+                        label: "English",
+                        flag: "/assets/lang/en.png"
+                    },
+                    kh: {
+                        label: "Khmer",
+                        flag: "/assets/lang/kh.png"
+                    },
+                    kr: {
+                        label: "Korean",
+                        flag: "/assets/lang/kr.png"
+                    },
+                    jp: {
+                        label: "Japanese",
+                        flag: "/assets/lang/jp.png"
+                    },
+                },
+
+                init() {
+                    window.addEventListener('scroll', () => {
+                        this.scrolled = window.scrollY > 50;
+                    });
+                },
+
+                changeLang(lang) {
+                    this.locale = lang;
+                    this.langOpen = false;
+
+                    fetch('/set-language', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                locale: lang
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.translations) {
+                                this.translations = {
+                                    ...data.translations
+                                };
+                                // Dispatch event to notify other components
+                                window.dispatchEvent(new CustomEvent('language-changed', {
+                                    detail: { locale: lang, translations: data.translations }
+                                }));
+                            }
+                        });
+                }
+            }
+        }
+
         AOS.init({
             duration: 800,
             once: false,
@@ -64,6 +131,10 @@
 
 
     <style>
+        [x-cloak] {
+            display: none;
+        }
+
         .suwannaphum-thin {
             font-family: "Suwannaphum", serif;
             font-weight: 100;

@@ -8,4 +8,5 @@ return [
     'profile' => 'プロフィール',
     'myTickets' => 'マイチケット',
     'logout' => 'ログアウト',
+    'watchNow' => '🎬 今すぐ視聴',
 ];

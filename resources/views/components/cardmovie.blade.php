@@ -1,3 +1,7 @@
+
+@extends('layouts.app')
+
+@section('content')
 @php
     $movies = \App\Models\Movie::latest()->get();
 @endphp
@@ -18,14 +22,14 @@
 
         @forelse ($movies as $movie)
             <a href="{{ url('/movies/' . $movie->id) }}"
-                class="group block rounded-2xl overflow-hidden hover:scale-105 transition duration-300 cursor-pointer" data-aos="zoom-in">
+                class="group block rounded-2xl overflow-hidden cursor-pointer" data-aos="zoom-in">
 
                 {{-- Poster with overlays --}}
                 <div class="relative">
                     <img
                         src="{{ $movie->poster ? asset($movie->poster) : 'https://static.wikia.nocookie.net/marveldatabase/images/b/b3/All-New_Venom_Vol_1_1_Lee_Virgin_Variant.jpg/revision/latest?cb=20241206180423' }}"
                         alt="{{ $movie->title }}"
-                        class="w-full object-cover rounded-2xl h-[220px] md:h-[280px] lg:h-[300px]">
+                        class="w-full object-cover rounded-2xl h-[220px] md:h-[280px] lg:h-[300px] group-hover:scale-110 transition-transform duration-500">
 
                     {{-- Dark gradient overlay at bottom --}}
                     <div class="absolute inset-0 rounded-2xl"
@@ -73,3 +77,4 @@
 
     </div>
 </div>
+@endsection

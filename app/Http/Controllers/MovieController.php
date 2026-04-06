@@ -29,5 +29,15 @@ class MovieController extends Controller
             'data' => $movies
         ]);
     }
-}
+    public function search(Request $request)
+    {
+        $q = $request->query('q', '');
 
+        $movies = Movie::where('title', 'like', "%{$q}%")
+            ->select('id', 'title', 'year', 'genre', 'poster', 'rating')
+            ->limit(6)
+            ->get();
+
+        return response()->json($movies);
+    }
+}

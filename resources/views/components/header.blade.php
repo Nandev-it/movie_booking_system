@@ -1,77 +1,215 @@
 <header x-data="headerComponent()" x-init="init()" class="relative z-50">
 
     <!-- Desktop Header -->
-    <div :class="scrolled ? 'bg-gray-900/70 backdrop-blur-md shadow-lg border-b border-white/10' : 'bg-transparent'"
-        class="hidden md:block fixed top-0 left-0 right-0 text-white transition-all duration-300 z-50">
+    <div :class="scrolled ? 'bg-[#0d0f14]/95 shadow-lg' : 'bg-transparent'"
+        class="hidden md:block fixed top-0 left-0 right-0 text-white transition-all duration-300 z-50 border-b border-white/[0.06]">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-8 h-[68px] flex items-center gap-8">
 
             <!-- Logo -->
-            <a href="{{ url('/') }}" class="text-2xl font-bold">
-                Nan<span class="text-purple-500">Flex</span>
+            <a href="{{ url('/') }}" class="flex items-center gap-2.5 shrink-0">
+                <img src="{{ asset('assets/logo/cineverse.png') }}" alt="Logo" class="w-32">
             </a>
 
-            <nav class="flex space-x-10 bg-gray-800/50 backdrop-blur-md rounded-full px-6 py-4">
-                <a href="{{ url('/') }}" class="hover:text-purple-500 transition" x-text="translations.home"></a>
-                <a href="{{ url('/movies') }}" class="hover:text-purple-500 transition"
+            <!-- Nav Links -->
+            <nav class="flex items-center gap-1 ml-2">
+                <a href="{{ url('/') }}"
+                    class="text-white text-sm font-medium px-3.5 py-1.5 rounded-md hover:bg-white/[0.07] transition-colors duration-200"
+                    x-text="translations.home"></a>
+                <a href="{{ url('/movies') }}"
+                    class="text-white/70 text-sm font-medium px-3.5 py-1.5 rounded-md hover:bg-white/[0.07] hover:text-white transition-colors duration-200"
                     x-text="translations.movies"></a>
-                <a href="{{ url('/theaters') }}" class="hover:text-purple-500 transition"
+                <a href="{{ url('/theaters') }}"
+                    class="text-white/70 text-sm font-medium px-3.5 py-1.5 rounded-md hover:bg-white/[0.07] hover:text-white transition-colors duration-200"
                     x-text="translations.theaters"></a>
-                <a href="{{ url('/releases') }}" class="hover:text-purple-500 transition"
+                <a href="{{ url('/releases') }}"
+                    class="text-white/70 text-sm font-medium px-3.5 py-1.5 rounded-md hover:bg-white/[0.07] hover:text-white transition-colors duration-200"
                     x-text="translations.releases"></a>
             </nav>
 
+            <!-- Spacer -->
+            <div class="flex-1"></div>
+
+            <!-- Search -->
+            <div class="relative flex items-center" x-data="{
+                query: '',
+                results: [],
+                searching: false,
+                showResults: false,
+                async search() {
+                    if (this.query.trim().length < 2) {
+                        this.results = [];
+                        this.showResults = false;
+                        return;
+                    }
+                    this.searching = true;
+                    this.showResults = true;
+                    try {
+                        const res = await fetch(`/search?q=${encodeURIComponent(this.query)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                        this.results = await res.json();
+                    } catch (e) { this.results = []; }
+                    this.searching = false;
+                },
+                clear() {
+                    this.query = '';
+                    this.results = [];
+                    this.showResults = false;
+                }
+            }">
+                <div class="relative w-56">
+                    <input type="text"
+                        x-model="query"
+                        @input.debounce.300ms="search()"
+                        @focus="if(results.length) showResults = true"
+                        @click.away="showResults = false"
+                        :placeholder="translations.search ?? 'Search movies, shows…'"
+                        class="w-full bg-white/[0.07] border border-white/10 rounded-lg text-white text-[13.5px]
+                           placeholder-white/35 px-3.5 py-[7px] pr-9 outline-none
+                           focus:border-white/25 focus:bg-white/10 transition-all duration-200" />
+                    <span class="absolute right-3 top-2 text-white/40 pointer-events-none" x-show="!searching && query.length === 0">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M9 3a6 6 0 100 12A6 6 0 009 3zM1 9a8 8 0 1114.32 4.906l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387A8 8 0 011 9z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    <svg x-show="searching" class="animate-spin absolute right-3 top-2" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12a9 9 0 11-6.219-8.56" />
+                    </svg>
+                    <button x-show="query.length > 0 && !searching" @click="clear()" class="absolute right-3 top-2 text-white/40 hover:text-white/60">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Results Dropdown -->
+                    <div x-show="showResults && results.length > 0" x-transition @click.away="showResults = false"
+                        class="absolute left-0 right-0 top-full mt-2 rounded-xl overflow-hidden shadow-2xl z-50 bg-[#1e2130] border border-white/[0.08]"
+                        style="min-width: 400px; max-height: 450px; overflow-y: auto;">
+                        <div class="p-3">
+                            <p class="text-xs mb-2 px-1 text-white/50">Results for "<span x-text="query" class="text-white/70"></span>"</p>
+                            <div class="flex flex-col gap-2">
+                                <template x-for="movie in results" :key="movie.id">
+                                    <a :href="movie.url" @click="clear()"
+                                        class="flex items-center gap-3 rounded-lg p-2 transition-colors duration-150 hover:bg-white/[0.05]">
+                                        <img :src="movie.poster ?? '/assets/default-poster.jpg'" :alt="movie.title"
+                                            class="w-12 h-16 object-cover rounded-md flex-shrink-0" style="min-width:48px;"
+                                            onerror="this.src='/assets/default-poster.jpg'">
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-white truncate" x-text="movie.title"></p>
+                                            <p class="text-xs text-white/60 mt-0.5" x-text="movie.genre ?? ''"></p>
+                                            <p class="text-xs text-white/40 mt-0.5"
+                                                x-text="movie.duration ? Math.floor(movie.duration/60)+'h '+(movie.duration%60)+'m' : ''"></p>
+                                            <div class="flex mt-1 text-yellow-400 text-xs">★ ★ ★ ★ ☆</div>
+                                        </div>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" class="flex-shrink-0 text-white/40">
+                                            <path d="M9 18l6-6-6-6" />
+                                        </svg>
+                                    </a>
+                                </template>
+                            </div>
+                            <a :href="`/movies?search=${query}`" @click="clear()"
+                                class="flex items-center justify-center gap-2 mt-3 py-2 rounded-lg text-xs transition-colors duration-150 border border-white/10 text-white/50 hover:text-white/75 hover:border-white/20">
+                                View all results
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div x-show="showResults && !searching && results.length === 0 && query.length >= 2" x-transition
+                        class="absolute left-0 right-0 top-full mt-2 rounded-lg px-4 py-4 text-sm text-center shadow-xl bg-[#1e2130] border border-white/[0.08] text-white/60"
+                        style="min-width: 400px;">
+                        No movies found for "<span x-text="query" class="text-white/80"></span>"
+                    </div>
+                </div>
+            </div>
+
             <!-- Right -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-1.5 shrink-0">
 
                 <!-- Language Switch -->
                 <div class="relative">
                     <button @click="langOpen = !langOpen"
-                        class="flex items-center space-x-2 hover:bg-gray-700 px-3 py-2 rounded-full transition">
-                        <img :src="languages[locale].flag" class="w-5 h-5 rounded-full">
+                        class="flex items-center gap-1.5 text-white/75 text-[13.5px] font-medium
+                           px-3 py-1.5 rounded-lg hover:bg-white/[0.07] hover:text-white transition-colors duration-200">
+                        <img :src="languages[locale].flag" class="w-[18px] h-[18px] rounded-full object-cover">
                         <span x-text="locale.toUpperCase()"></span>
                     </button>
 
                     <div x-show="langOpen" x-cloak @click.away="langOpen=false" x-transition
-                        class="absolute right-0 mt-3 w-40 bg-gray-800 rounded-xl shadow-xl overflow-hidden">
+                        class="absolute right-0 mt-2 w-40 bg-[#1e2130] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
                         <template x-for="(lang, key) in languages" :key="key">
                             <button @click="changeLang(key)"
-                                class="flex items-center space-x-2 w-full px-4 py-2 hover:bg-gray-700">
-                                <img :src="lang.flag" class="w-5 h-5 rounded-full">
+                                class="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-white/75 hover:bg-white/[0.07] hover:text-white transition-colors duration-200">
+                                <img :src="lang.flag" class="w-[18px] h-[18px] rounded-full object-cover">
                                 <span x-text="lang.label"></span>
                             </button>
                         </template>
                     </div>
                 </div>
 
+                <!-- Divider -->
+                <div class="w-px h-[22px] bg-white/10 mx-1"></div>
+
+                <!-- Notification Bell -->
+                <button
+                    class="relative w-[38px] h-[38px] flex items-center justify-center rounded-lg
+                           text-white/70 hover:bg-white/[0.07] hover:text-white transition-colors duration-200">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                    <span
+                        class="absolute top-[7px] right-[7px] w-2 h-2 rounded-full bg-[#4f8ef7] border-2 border-[#13151c]"></span>
+                </button>
+
                 @guest
                     <a href="{{ url('/login') }}"
-                        class="bg-purple-500 hover:bg-purple-600 px-5 py-2 rounded-full transition"
+                        class="bg-[#5b5fc7] hover:bg-[#6e72e0] text-white text-[13.5px] font-semibold
+                           px-5 py-[7px] rounded-lg transition-colors duration-200"
                         x-text="translations.login"></a>
                 @endguest
 
                 @auth
                     <div class="relative" x-data="{ userOpen: false }">
                         <button @click="userOpen = !userOpen"
-                            class="flex items-center space-x-2 hover:bg-gray-700 px-3 py-2 rounded-full">
+                            class="flex items-center gap-2 px-1 pr-3 py-1 rounded-lg
+                               hover:bg-white/[0.07] transition-colors duration-200">
                             <div
-                                class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+                                class="w-8 h-8 rounded-full bg-gradient-to-br from-[#6c63ff] to-[#4f8ef7]
+                                    flex items-center justify-center text-white text-sm font-bold shrink-0">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
-                            <span>{{ Auth::user()->name }}</span>
+                            <span class="text-[13.5px] font-medium text-white/85 whitespace-nowrap">
+                                {{ Auth::user()->name }}
+                            </span>
                         </button>
+
                         <div x-show="userOpen" x-cloak @click.away="userOpen=false" x-transition
-                            class="absolute right-0 mt-3 w-44 bg-gray-800 rounded-xl shadow-xl">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700" x-text="translations.profile"></a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700" x-text="translations.myTickets"></a>
+                            class="absolute right-0 mt-2 w-44 bg-[#1e2130] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
+                            <a href="{{ url('/profile') }}"
+                                class="block px-4 py-2.5 text-sm text-white/75 hover:bg-white/[0.07] hover:text-white transition-colors duration-200"
+                                x-text="translations.profile"></a>
+                            <a href="{{ url('/my-tickets') }}"
+                                class="block px-4 py-2.5 text-sm text-white/75 hover:bg-white/[0.07] hover:text-white transition-colors duration-200"
+                                x-text="translations.myTickets"></a>
+                            <div class="border-t border-white/[0.06]"></div>
                             <form action="{{ url('/logout') }}" method="POST">
                                 @csrf
-                                <button class="w-full text-left px-4 py-2 hover:bg-red-500"
+                                <button
+                                    class="w-full text-left px-4 py-2.5 text-sm text-white/75 hover:bg-red-500/80 hover:text-white transition-colors duration-200"
                                     x-text="translations.logout"></button>
                             </form>
                         </div>
                     </div>
                 @endauth
+
             </div>
         </div>
     </div>
@@ -126,10 +264,11 @@
         </button>
 
         {{-- Backdrop --}}
-        <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false"
-            class="fixed inset-0 z-40" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none;">
+        <div x-show="open" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" @click="open = false" class="fixed inset-0 z-40"
+            style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none;">
         </div>
 
         {{-- Sidebar Panel --}}
@@ -142,14 +281,9 @@
 
             {{-- Sidebar Header --}}
             <div class="flex items-center justify-between px-4 pt-5 pb-3">
-                <div class="flex items-center gap-2">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c6fe0"
-                        stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4" />
-                    </svg>
-                    <span class="font-semibold text-base text-white">CineBook</span>
-                </div>
+                <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <img src="{{ asset('assets/logo/cineverse.png') }}" alt="Logo" class="w-32">
+                </a>
                 <button @click="open = false" style="color:#666;">
                     <svg class="h-5 w-5 cursor-pointer hover:text-amber-200 transition-all duration-300"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +392,7 @@
                 </div>
             </div>
 
-            {{-- Nav Links — ✅ translations now works because we're inside headerComponent() scope --}}
+            {{-- Nav Links for Mobile Screen --}}
             <nav class="flex flex-col gap-0.5 px-3 flex-1 overflow-y-auto">
 
                 <a href="{{ url('/') }}" @click="active='/'; open=false"
@@ -269,10 +403,12 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === '/'">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {{-- <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l9-9 9 9v9a3 3 0 01-3 3H6a3 3 0 01-3-3v-9z" />
-                    </svg>
+                    </svg> --}}
+                    <img class="w-4 h-4 flex-shrink-0" src="https://img.icons8.com/clouds/100/home-page.png"
+                        alt="home-page" />
                     <span x-text="translations.home"></span>
                 </a>
 
@@ -284,10 +420,8 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === 'movies'">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-                    </svg>
+                    <img class="w-4 h-4 flex-shrink-0" src="https://img.icons8.com/clouds/100/documentary.png"
+                        alt="documentary" />
                     <span x-text="translations.movies"></span>
                 </a>
 
@@ -299,7 +433,9 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === 'theaters'">
-                    <img src="{{ asset('assets/module/release.png') }}" alt="" class="w-4 h-4 flex-shrink-0">
+                    <img class="w-4 h-4 flex-shrink-0"
+                        src="https://img.icons8.com/external-flatart-icons-lineal-color-flatarticons/64/external-theater-city-elements-flatart-icons-lineal-color-flatarticons.png"
+                        alt="external-theater-city-elements-flatart-icons-lineal-color-flatarticons" />
                     <span x-text="translations.theaters"></span>
                 </a>
 
@@ -311,7 +447,8 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === 'releases'">
-                    <img src="{{ asset('assets/module/release.png') }}" alt="" class="w-4 h-4 flex-shrink-0">
+                    <img src="{{ asset('assets/module/release.png') }}" alt=""
+                        class="w-4 h-4 flex-shrink-0">
                     <span x-text="translations.releases"></span>
                 </a>
 
@@ -346,74 +483,3 @@
     </div>
 
 </header>
-
-{{-- ✅ Alpine loaded ONCE only --}}
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-<script>
-    function headerComponent() {
-        return {
-            scrolled: false,
-            langOpen: false,
-            open: false,
-            active: '{{ request()->path() == '/' ? '/' : request()->segment(1) }}', // ✅ moved from sidebar x-data
-            locale: '{{ session('locale', app()->getLocale()) }}',
-            translations: @json(__('messages')),
-
-            languages: {
-                en: {
-                    label: "English",
-                    flag: "/assets/lang/en.png"
-                },
-                kh: {
-                    label: "Khmer",
-                    flag: "/assets/lang/kh.png"
-                },
-                kr: {
-                    label: "Korean",
-                    flag: "/assets/lang/kr.png"
-                },
-                jp: {
-                    label: "Japanese",
-                    flag: "/assets/lang/jp.png"
-                },
-            },
-
-            init() {
-                window.addEventListener('scroll', () => {
-                    this.scrolled = window.scrollY > 50;
-                });
-            },
-
-            changeLang(lang) {
-                this.locale = lang;
-                this.langOpen = false;
-
-                fetch('/set-language', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            locale: lang
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.translations) {
-                            this.translations = {
-                                ...data.translations
-                            }; // ✅ spread to trigger reactivity
-                        }
-                    });
-            }
-        }
-    }
-</script>
-
-<style>
-    [x-cloak] {
-        display: none;
-    }
-</style>
