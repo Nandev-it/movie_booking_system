@@ -17,4 +17,17 @@ class MovieController extends Controller
         $movie = Movie::findOrFail($id);
         return view('movies.show', compact('movie'));
     }
+
+    public function lists()
+    {
+        $movies = Movie::all();
+        $counts = Movie::count();
+
+        return response()->json([
+            'count' => $counts,
+            'message' => 'success',
+            'data' => $movies
+        ]);
+    }
 }
+

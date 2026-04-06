@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Cinzel:wght@400..900&family=Dangrek&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Hanuman:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans+Khmer:wght@100..900&family=Noto+Serif+Khmer:wght@100..900&family=Roboto+Slab:wght@100..900&family=Suwannaphum:wght@100;300;400;700;900&display=swap"
         rel="stylesheet">
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 </head>
 
@@ -56,11 +56,12 @@
     <script>
         AOS.init({
             duration: 800,
-            once: true
+            once: false,
+            mirror: true
         });
     </script>
 
-    
+
 
     <style>
         .suwannaphum-thin {

@@ -11,14 +11,14 @@
                 Nan<span class="text-purple-500">Flex</span>
             </a>
 
-            <!-- Navigation -->
             <nav class="flex space-x-10 bg-gray-800/50 backdrop-blur-md rounded-full px-6 py-4">
-                <a href="{{ url('/') }}" class="hover:text-purple-500 transition">{{ __('messages.home') }}</a>
-                <a href="{{ url('/movies') }}" class="hover:text-purple-500 transition">{{ __('messages.movies') }}</a>
-                <a href="{{ url('/theaters') }}"
-                    class="hover:text-purple-500 transition">{{ __('messages.theaters') }}</a>
-                <a href="{{ url('/releases') }}"
-                    class="hover:text-purple-500 transition">{{ __('messages.releases') }}</a>
+                <a href="{{ url('/') }}" class="hover:text-purple-500 transition" x-text="translations.home"></a>
+                <a href="{{ url('/movies') }}" class="hover:text-purple-500 transition"
+                    x-text="translations.movies"></a>
+                <a href="{{ url('/theaters') }}" class="hover:text-purple-500 transition"
+                    x-text="translations.theaters"></a>
+                <a href="{{ url('/releases') }}" class="hover:text-purple-500 transition"
+                    x-text="translations.releases"></a>
             </nav>
 
             <!-- Right -->
@@ -44,12 +44,10 @@
                     </div>
                 </div>
 
-                <!-- Auth Links -->
                 @guest
                     <a href="{{ url('/login') }}"
-                        class="bg-purple-500 hover:bg-purple-600 px-5 py-2 rounded-full transition">
-                        {{ __('messages.login') }}
-                    </a>
+                        class="bg-purple-500 hover:bg-purple-600 px-5 py-2 rounded-full transition"
+                        x-text="translations.login"></a>
                 @endguest
 
                 @auth
@@ -62,16 +60,14 @@
                             </div>
                             <span>{{ Auth::user()->name }}</span>
                         </button>
-
                         <div x-show="userOpen" x-cloak @click.away="userOpen=false" x-transition
                             class="absolute right-0 mt-3 w-44 bg-gray-800 rounded-xl shadow-xl">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">{{ __('messages.profile') }}</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-700">{{ __('messages.myTickets') }}</a>
-
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700" x-text="translations.profile"></a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-700" x-text="translations.myTickets"></a>
                             <form action="{{ url('/logout') }}" method="POST">
                                 @csrf
-                                <button
-                                    class="w-full text-left px-4 py-2 hover:bg-red-500">{{ __('messages.logout') }}</button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-red-500"
+                                    x-text="translations.logout"></button>
                             </form>
                         </div>
                     </div>
@@ -80,41 +76,49 @@
         </div>
     </div>
 
-
-    <!-- Mobile Language Switch (Top Right) -->
-    {{-- Mobile Language Switch (Top Right) --}}
+    <!-- Mobile Language Switch -->
     <div class="md:hidden fixed top-4 right-4 z-50">
-        <div class="relative">
+        <div class="relative flex flex-col items-center">
+
+            <!-- Language Button -->
             <button @click="langOpen = !langOpen"
-                class="flex items-center justify-center w-10 h-10 rounded-full shadow-md" style="background:#2a2a2e;">
+                class="flex items-center justify-center w-10 h-10 rounded-full shadow-md cursor-pointer"
+                style="background:#2a2a2e;">
                 <img :src="languages[locale].flag" class="w-5 h-5 rounded-full">
             </button>
 
+            <!-- Dropdown -->
             <div x-show="langOpen" x-cloak @click.away="langOpen=false" x-transition
-                class="absolute right-0 mt-3 w-36 rounded-xl shadow-xl overflow-hidden"
+                class="absolute right-0 mt-3 w-36 rounded-xl shadow-xl overflow-hidden cursor-pointer"
                 style="background:#1c1c1e; border: 0.5px solid #2e2e32;">
+
                 <template x-for="(lang, key) in languages" :key="key">
                     <button @click="changeLang(key)"
                         class="flex items-center gap-2 w-full px-3 py-2.5 text-sm transition-colors duration-150"
                         style="color:#ccc;" onmouseover="this.style.background='#2a2a2e'"
                         onmouseout="this.style.background='transparent'">
+
                         <img :src="lang.flag" class="w-5 h-5 rounded-full flex-shrink-0">
                         <span x-text="lang.label"></span>
+
                     </button>
                 </template>
             </div>
+
         </div>
     </div>
+    <!-- Center Image (top + center) -->
+    <a href="{{ url('/') }}" class="fixed left-1/2 transform -translate-x-1/2 z-40 block md:hidden">
+        <img src="{{ asset('assets/logo/cineverse.png') }}" alt="Logo" class="w-32">
+    </a>
 
     {{-- Mobile Sidebar --}}
-    <div x-data="{
-        open: false,
-        active: '{{ request()->path() }}'
-    }" class="md:hidden">
+    {{-- ✅ REMOVED nested x-data — sidebar now shares the parent headerComponent() scope --}}
+    <div class="md:hidden">
 
-        {{-- Hamburger Button --}}
+        {{-- Hamburger --}}
         <button @click="open = true"
-            class="fixed top-4 left-4 z-50 flex items-center justify-center w-10 h-10 rounded-full text-white shadow-lg"
+            class="fixed top-4 left-4 z-50 flex items-center justify-center w-10 h-10 rounded-full text-white shadow-lg cursor-pointer"
             style="background:#2a2a2e;">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -128,7 +132,7 @@
             class="fixed inset-0 z-40" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none;">
         </div>
 
-        {{-- Sidebar --}}
+        {{-- Sidebar Panel --}}
         <div x-show="open" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
@@ -136,7 +140,7 @@
             class="fixed top-0 left-0 h-full w-72 z-50 flex flex-col shadow-2xl"
             style="background: #1c1c1e; display: none;">
 
-            {{-- Header --}}
+            {{-- Sidebar Header --}}
             <div class="flex items-center justify-between px-4 pt-5 pb-3">
                 <div class="flex items-center gap-2">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c6fe0"
@@ -146,25 +150,21 @@
                     </svg>
                     <span class="font-semibold text-base text-white">CineBook</span>
                 </div>
-
-                <div class="flex items-center gap-3">
-
-                    {{-- Close Button --}}
-                    <button @click="open = false" style="color:#666;">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                <button @click="open = false" style="color:#666;">
+                    <svg class="h-5 w-5 cursor-pointer hover:text-amber-200 transition-all duration-300"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
+
             {{-- Search Bar --}}
             <div class="mx-3 mb-3 relative" x-data="{
                 query: '',
                 results: [],
                 searching: false,
                 showResults: false,
-
                 async search() {
                     if (this.query.trim().length < 2) {
                         this.results = [];
@@ -174,24 +174,17 @@
                     this.searching = true;
                     this.showResults = true;
                     try {
-                        const res = await fetch(`/search?q=${encodeURIComponent(this.query)}`, {
-                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                        });
+                        const res = await fetch(`/search?q=${encodeURIComponent(this.query)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                         this.results = await res.json();
-                    } catch (e) {
-                        this.results = [];
-                    }
+                    } catch (e) { this.results = []; }
                     this.searching = false;
                 },
-
                 clear() {
                     this.query = '';
                     this.results = [];
                     this.showResults = false;
                 }
             }">
-
-                {{-- Input --}}
                 <div class="flex items-center gap-2 rounded-xl px-3 py-2.5" style="background:#2a2a2e;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666"
                         stroke-width="2">
@@ -214,30 +207,20 @@
                     </button>
                 </div>
 
-                {{-- Movie Cards Results --}}
-                <div x-show="showResults && results.length > 0" x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 -translate-y-2"
-                    x-transition:enter-end="opacity-100 translate-y-0" @click.away="showResults = false"
+                <div x-show="showResults && results.length > 0" x-transition @click.away="showResults = false"
                     class="absolute left-0 right-0 mt-2 rounded-2xl overflow-hidden shadow-2xl z-50 p-3"
                     style="background:#1c1c1e; border: 0.5px solid #2e2e32; width: 320px;">
-
-                    <p class="text-xs mb-2 px-1" style="color:#555;">
-                        Results for "<span x-text="query" style="color:#888;"></span>"
-                    </p>
-
+                    <p class="text-xs mb-2 px-1" style="color:#555;">Results for "<span x-text="query"
+                            style="color:#888;"></span>"</p>
                     <div class="flex flex-col gap-2">
                         <template x-for="movie in results" :key="movie.id">
-                            <a :href="movie.url" @click="clear(); open = false"
+                            <a :href="movie.url" @click="clear(); $root.open = false"
                                 class="flex items-center gap-3 rounded-xl p-2 transition-colors duration-150 cursor-pointer"
                                 onmouseover="this.style.background='#2a2a2e'"
                                 onmouseout="this.style.background='transparent'">
-
-                                {{-- Poster --}}
                                 <img :src="movie.poster ?? '/assets/default-poster.jpg'" :alt="movie.title"
                                     class="w-12 h-16 object-cover rounded-lg flex-shrink-0" style="min-width:48px;"
                                     onerror="this.src='/assets/default-poster.jpg'">
-
-                                {{-- Info --}}
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-medium truncate" style="color:#fff;" x-text="movie.title">
                                     </p>
@@ -245,22 +228,16 @@
                                     <p class="text-xs mt-0.5" style="color:#666;"
                                         x-text="movie.duration ? Math.floor(movie.duration/60)+'h '+(movie.duration%60)+'m' : ''">
                                     </p>
-                                    <div class="flex mt-1">
-                                        <span style="color:#facc15; font-size:11px;">★ ★ ★ ★ ☆</span>
-                                    </div>
+                                    <div class="flex mt-1"><span style="color:#facc15; font-size:11px;">★ ★ ★ ★
+                                            ☆</span></div>
                                 </div>
-
-                                {{-- Arrow --}}
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                     stroke="#555" stroke-width="2" class="flex-shrink-0">
                                     <path d="M9 18l6-6-6-6" />
                                 </svg>
-
                             </a>
                         </template>
                     </div>
-
-                    {{-- View all results --}}
                     <a :href="`/movies?search=${query}`"
                         class="flex items-center justify-center gap-2 mt-3 py-2 rounded-xl text-xs transition-colors duration-150"
                         style="color:#7c6fe0; border: 0.5px solid #2e2e32;"
@@ -274,19 +251,16 @@
                     </a>
                 </div>
 
-                {{-- No Results --}}
                 <div x-show="showResults && !searching && results.length === 0 && query.length >= 2" x-transition
                     class="absolute left-0 right-0 mt-2 rounded-xl px-4 py-4 text-sm text-center shadow-xl"
                     style="background:#1c1c1e; border: 0.5px solid #2e2e32; color:#555;">
                     No movies found for "<span x-text="query" style="color:#888;"></span>"
                 </div>
-
             </div>
 
-            {{-- Nav Links --}}
+            {{-- Nav Links — ✅ translations now works because we're inside headerComponent() scope --}}
             <nav class="flex flex-col gap-0.5 px-3 flex-1 overflow-y-auto">
 
-                {{-- Home --}}
                 <a href="{{ url('/') }}" @click="active='/'; open=false"
                     :style="active === '/' ?
                         'background: linear-gradient(90deg,#3b2f6e 0%,transparent 100%); border-right: 2px solid #7c6fe0; color:#fff;' :
@@ -302,7 +276,6 @@
                     <span x-text="translations.home"></span>
                 </a>
 
-                {{-- Movies --}}
                 <a href="{{ url('/movies') }}" @click="active='movies'; open=false"
                     :style="active === 'movies' ?
                         'background: linear-gradient(90deg,#3b2f6e 0%,transparent 100%); border-right: 2px solid #7c6fe0; color:#fff;' :
@@ -318,7 +291,6 @@
                     <span x-text="translations.movies"></span>
                 </a>
 
-                {{-- Theaters --}}
                 <a href="{{ url('/theaters') }}" @click="active='theaters'; open=false"
                     :style="active === 'theaters' ?
                         'background: linear-gradient(90deg,#3b2f6e 0%,transparent 100%); border-right: 2px solid #7c6fe0; color:#fff;' :
@@ -327,14 +299,10 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === 'theaters'">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 7h18M3 12h18M3 17h18" />
-                    </svg>
+                    <img src="{{ asset('assets/module/release.png') }}" alt="" class="w-4 h-4 flex-shrink-0">
                     <span x-text="translations.theaters"></span>
                 </a>
 
-                {{-- Releases --}}
                 <a href="{{ url('/releases') }}" @click="active='releases'; open=false"
                     :style="active === 'releases' ?
                         'background: linear-gradient(90deg,#3b2f6e 0%,transparent 100%); border-right: 2px solid #7c6fe0; color:#fff;' :
@@ -343,10 +311,7 @@
                     onmouseover="if(this.getAttribute('data-active')!=='true') this.style.background='#2a2a2e'"
                     onmouseout="if(this.getAttribute('data-active')!=='true') this.style.background='transparent'"
                     :data-active="active === 'releases'">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+                    <img src="{{ asset('assets/module/release.png') }}" alt="" class="w-4 h-4 flex-shrink-0">
                     <span x-text="translations.releases"></span>
                 </a>
 
@@ -354,7 +319,6 @@
 
             {{-- User Row --}}
             <div class="flex items-center gap-3 px-4 py-4" style="border-top: 0.5px solid #2e2e32;">
-
                 @auth
                     <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0"
                         style="background:#5b4fcf;">
@@ -363,16 +327,6 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-white text-sm font-medium truncate">{{ Auth::user()->name }}</p>
                         <p class="text-xs truncate" style="color:#777;">{{ Auth::user()->email }}</p>
-                    </div>
-                    <div class="flex flex-col gap-0.5">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555"
-                            stroke-width="2">
-                            <polyline points="18 15 12 9 6 15" />
-                        </svg>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555"
-                            stroke-width="2">
-                            <polyline points="6 9 12 15 18 9" />
-                        </svg>
                     </div>
                 @endauth
 
@@ -386,7 +340,6 @@
                         <span x-text="translations.login"></span>
                     </a>
                 @endguest
-
             </div>
 
         </div>
@@ -394,12 +347,16 @@
 
 </header>
 
+{{-- ✅ Alpine loaded ONCE only --}}
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 <script>
     function headerComponent() {
         return {
             scrolled: false,
             langOpen: false,
             open: false,
+            active: '{{ request()->path() == '/' ? '/' : request()->segment(1) }}', // ✅ moved from sidebar x-data
             locale: '{{ session('locale', app()->getLocale()) }}',
             translations: @json(__('messages')),
 
@@ -445,15 +402,15 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.translations) {
-                            this.translations = data.translations;
+                            this.translations = {
+                                ...data.translations
+                            }; // ✅ spread to trigger reactivity
                         }
                     });
             }
         }
     }
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
 <style>
     [x-cloak] {

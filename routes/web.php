@@ -9,6 +9,9 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PhoneLoginController;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Lang;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,18 +56,23 @@ Route::get('/maintenance', function () {
 
 // });
 
-// routes/web.php
 Route::post('/set-language', function (Request $request) {
-    $locale = $request->getLocale;
+    $locale = $request->input('locale'); // ✅ was: $request->getLocale (wrong)
     $supported = ['en', 'kh', 'kr', 'jp'];
 
-    if (in_array($locale, $supported)) {
-        session(['locale' => $locale]);
-        App::setLocale($locale);
+    if (!in_array($locale, $supported)) {
+        $locale = 'en'; // fallback
     }
 
+    session(['locale' => $locale]);
+    App::setLocale($locale);
+
+    // ✅ Correct way to return the full translations array
+    $translations = require resource_path("lang/{$locale}/messages.php");
+
     return response()->json([
-        'translations' => trans('messages', [], $locale)
+        'success'      => true,
+        'translations' => $translations,
     ]);
 });
 
@@ -80,6 +88,6 @@ Route::get('/login/phone',         [PhoneLoginController::class, 'index'])->name
 Route::post('/login/phone/otp',    [PhoneLoginController::class, 'sendOtp'])->name('phone.otp.send');
 Route::post('/login/phone/verify', [PhoneLoginController::class, 'verifyOtp'])->name('phone.otp.verify');
 
-Route::get('/test-phone', function() {
+Route::get('/test-phone', function () {
     return response()->json(['success' => true, 'message' => 'Route working']);
 });
